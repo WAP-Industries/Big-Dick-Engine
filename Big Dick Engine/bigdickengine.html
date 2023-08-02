@@ -1,0 +1,180 @@
+<title>Big Dick Engine</title>
+
+<style>
+    body{
+        background: url('files/images/ui/background.jpg');
+        background-size: 100% 100%;
+    }
+    @font-face {
+        font-family: "pixel-font";  
+        src: url("files/fonts/vt323.ttf");
+    }
+
+    *{
+        font-family: "pixel-font"; 
+        box-sizing: border-box; 
+    }
+    .button:hover{
+        opacity: 0.7;
+    }
+
+    input[type="file"]::-webkit-file-upload-button {
+        vertical-align: middle;
+        height: 100%;
+        font-family: "pixel-font";  
+    }
+
+</style>
+
+<!-- lib -->
+<script src="files/lib/FileSaver.js"></script>
+
+<!-- classes -->
+<script src="files/scripts/components/sprite_class.js"></script>
+<script src="files/scripts/components/character_class.js"></script>
+<script src="files/scripts/components/tile_class.js"></script>
+<script src="files/scripts/components/door_class.js"></script>
+
+
+<!-- build -->
+<script src="files/scripts/build/system.js"></script>
+<script src="files/scripts/build/ui.js"></script>
+<script src="files/scripts/build/build.js"></script>
+<script src="files/scripts/build/built_in.js"></script>
+
+<!-- usage -->
+<script src="files/scripts/usage/title_screen_editing.js"></script>
+<script src="files/scripts/usage/add_component.js"></script>
+<script src="files/scripts/usage/map_scrolling.js"></script>
+<script src="files/scripts/usage/map_creation.js"></script>
+<script src="files/scripts/usage/state_management.js"></script>
+<script src="files/scripts/usage/file_handling.js"></script>
+
+<!-- utils -->
+<script src="files/scripts/utils/component_search.js"></script>
+<script src="files/scripts/utils/image_handling.js"></script>
+<script src="files/scripts/utils/font_resizing.js"></script>
+
+<!--DickLang-->
+<script src="files/scripts/DickLang/keywords.js"></script>
+<script src="files/scripts/DickLang/lexer.js"></script>
+<script src="files/scripts/DickLang/parser.js"></script>
+<script src="files/scripts/DickLang/debugger.js"></script>
+<script src="files/scripts/DickLang/interpreter.js"></script>
+
+<!-- game -->
+<script src="files/scripts/game/start.js"></script>
+<script src="files/scripts/game/events.js"></script>
+<script src="files/scripts/game/collision.js"></script>
+<script src="files/scripts/game/dialogue.js"></script>
+<script src="files/scripts/game/choice.js"></script>
+<script src="files/scripts/game/ending.js"></script>
+<script src="files/scripts/game/wander.js"></script>
+
+
+<script>
+
+    window.onload = ()=>{
+        LoadMenu()
+    // CreateNewProject("nig")
+    }
+
+
+    function LoadMenu(){
+        let menu = document.createElement("div")
+        menu.id = "MainMenu"
+        menu.style =  `position: absolute; margin: auto; 
+        top:0; right:0; left:0; bottom:0;
+        width: 1000; height: 700; border: 4px solid black;
+        background-image: url('files/images/ui/jslutty.jpg'); background-size: 100% 100%;`
+        document.body.appendChild(menu)
+
+        let bg = document.createElement("div")
+        bg.style = `position: absolute; margin: auto; 
+        width: ${parseInt(menu.style.width, 10)-parseInt(menu.style.border, 10)*2}; 
+        height: ${parseInt(menu.style.height, 10)-parseInt(menu.style.border, 10)*2};
+        opacity: 0.5; background: black`
+        menu.appendChild(bg)
+
+        let btns = [
+            ["New Project", "File Name", "text", CreateNewProject], 
+            ["Load Project","File", "file", LoadProject], 
+            ["Load Game", "File", "file", LoadGame]
+        ]
+        for (let btn of btns){
+            let dist = btns.length/2-btns.indexOf(btn)
+            let new_btn = document.createElement("button")
+            new_btn.id = "ActionButton"
+            new_btn.setAttribute("class", "button")
+            new_btn.style = `position: absolute; margin: auto; left: 0; right: 0;
+            border-radius: 10px; border: 2px solid black; background: #7B68EE;
+            text-align: center; color: white;
+            display: flex; align-items: center; justify-content: center;
+            width: ${parseInt(menu.style.width, 10)*0.6}; height: ${parseInt(menu.style.height, 10)/8};`
+            new_btn.innerHTML = btn[0]
+            new_btn.style.fontSize = parseInt(new_btn.style.height, 10)/2
+            new_btn.style.top = parseInt(menu.style.height, 10)/2-dist*parseInt(new_btn.style.height, 10)-20*dist
+            new_btn.onclick=()=>PromptFile(btn)
+            menu.appendChild(new_btn)
+        }
+    }
+
+
+    function PromptFile(btninfo){
+        let menu = document.getElementById("MainMenu")
+        Array(...menu.childNodes)
+            .filter(elem=>elem.id=="ActionButton")
+            .forEach(elem=>menu.removeChild(elem))
+        
+        let box = document.createElement("input")
+        box.id = "InputDiv"
+        box.type=btninfo[2]
+        box.style = `position: absolute; margin: auto; left: 0; right:0; top:0; bottom:0;
+        background: white; border: 2px solid black; 
+        border-radius: 5px;
+        width: ${parseInt(menu.style.width, 10)*0.5}; 
+        height: ${parseInt(menu.style.height, 10)/10};`
+        box.placeholder = btninfo[1]
+        box.style.fontSize = parseInt(box.style.height, 10)*0.5
+        document.body.appendChild(box)
+
+        let submit = document.createElement("button")
+        submit.id = "SubmitButton"
+        submit.setAttribute("class", "button")
+        submit.style = `position: absolute; margin: auto; 
+        border: none;
+        background: url('files/images/ui/end_text_btn.png'); background-size: 100% 100%;
+        top: 0; bottom:0;
+        left: ${box.getBoundingClientRect().x+box.getBoundingClientRect().width}`
+        submit.style.width = parseInt(box.style.height, 10)*0.8
+        submit.style.height = box.style.height
+        submit.onclick =()=> {
+            const Reverse = (str)=>(str.split("").reverse().join(""))
+
+            if (box.type=="file" && Reverse(box.files[0].name).indexOf(Reverse(".BIGDICKENGINE"))!=0) 
+                return alert("Invalid file type.\nSupported extension: .BIGDICKENGINE")
+            btninfo[3](box.type=="file" ? box.files:box.value)
+
+            Array("MainMenu", "InputDiv", "SubmitButton", "BackButton").forEach(i=>document.body.removeChild(document.getElementById(i)))
+        }
+
+        let back = document.createElement("button")
+        back.setAttribute("class", "button")
+        back.id = "BackButton"
+        back.style = `position: absolute; margin: auto; 
+        border: none;
+        background: url('files/images/ui/back_btn.png'); background-size: 100% 100%;
+        top: ${menu.getBoundingClientRect().y+10};
+        left: ${menu.getBoundingClientRect().x+10}`
+        back.style.width = submit.style.width
+        back.style.height = submit.style.height
+        back.onclick = ()=>{
+            LoadMenu()
+            Array(menu,submit, back, box).forEach(elem=>document.body.removeChild(elem))
+        }
+
+        document.body.appendChild(submit)
+        document.body.appendChild(back)
+    }
+
+</script>

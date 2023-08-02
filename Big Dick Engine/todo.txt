@@ -1,0 +1,14 @@
+--shit to add--
+
+1. fix compare-object issue
+	- object assign doesnt create deep copy
+	- find a way to delete interaction variable reference when comparing
+
+
+--future plans--
+
+- DickScript
+	- dicklang but for general programming
+	- similar syntax
+
+- remake the shrek rpg
