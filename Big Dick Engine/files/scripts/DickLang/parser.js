@@ -1,19 +1,7 @@
 class Parser{
-    static GetAlphaNum(str, start, end){
-        let i=start;
-        if (/[\S]/.exec(str[start])) return start
-        while ((start>end ? i>=end:i<=end)) {
-            if (/[\S]/.exec(str[i])) return i
-            i+=(start>end ? -1:1);
-        }
-    }
-
     static StripSpace(string){
-        let aFirst = Parser.GetAlphaNum(string, 0, string.length-1)
-        let aLast = Parser.GetAlphaNum(string, string.length-1, 0)
-        return string.substring(aFirst, aLast+1)
+        return string.trim()
     }
-
 
     static Parse(code){
         let groups = code.replace(/\n/gm, "\t").split("8=====D").filter(string=>string!="")

@@ -30,7 +30,7 @@ class Debugger{
     }
 
 
-    static Error = (type, error, line)=>{
+    static Error(type, error, line){
         alert(`Uncaught ${type}Error: ${error}\n${line.join(" 8=D ")}`)
         return null
     }

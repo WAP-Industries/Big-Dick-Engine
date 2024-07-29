@@ -112,7 +112,6 @@ class Keywords{
             func: (char, prop, val)=>{
                 let _char = Search_Char(char)
                 let _prop = Parser.StripSpace(prop)
-                let line = ["mutate", char, `${_prop} <> ${val}`]
 
                 if (!(_prop in _char))
                     return Debugger.RunTimeError("Reference", "Character Component property does not exist")

@@ -90,6 +90,8 @@ class System{
 
     static TextSpeed = 20
 
+    static Assets = {}
+
 
     static pop_slots(){
         let slots = {}
@@ -99,8 +101,13 @@ class System{
 
 
     static Get_Image(src){
-        let img = new Image(); img.src = src
-        return img
+        if (System.Assets[src]==undefined){
+            let img = new Image();
+            img.src = src
+            System.Assets[src] = img
+        }
+
+        return System.Assets[src]
     }
 
     static InView(object){
