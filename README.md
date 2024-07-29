@@ -3,3 +3,5 @@ theres like zero documentation for the ui and the interpreted language, so good 
   
 ![BUILD SCREENSHOT](https://github.com/WAP-Industries/Big-Dick-Engine/blob/main/example_project.png?raw=true)
 ![BUILD SCREENSHOT](https://github.com/WAP-Industries/Big-Dick-Engine/blob/main/example_game.png?raw=true)
+
+<b> 29/7/24 update: </b> finally fixed sprite flickering through rendering optimisation
